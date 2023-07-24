@@ -216,7 +216,7 @@ TreeNode<T>* BST<T>::getSuccessor(TreeNode<T>* d){
     // d reps node that is going to be deleted
     TreeNode<T>* sp = d;
     TreeNode<T> *successor = d;
-    TreeNode<T>* curr = d->right;
+    TreeNode<T>* curr = d->righgit t;
 
     while(curr != NULL){
         sp = successor;
