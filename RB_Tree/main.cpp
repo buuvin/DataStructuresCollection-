@@ -28,7 +28,7 @@ int main(int argc, char **argv){
 
 
 
-    bst1->deleteNode(30);
+    //bst1->deleteNode(30);
 
     bst1->printTree();
 

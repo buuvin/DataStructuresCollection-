@@ -2,6 +2,7 @@
 #define RBTREE_H
 
 #include "TreeNode.h"
+#include "bst.h"
 #include<iostream>
 using namespace std;
 
@@ -17,8 +18,8 @@ public:
     void rotateRight(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* uncle, TreeNode<T>* curr);
     void rotateLeft(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* uncle, TreeNode<T>* curr);
     bool contains(T value);
-    void delete(T value);
-    void delete(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* sibling, TreeNode<T>* curr, TreeNode<T>* node);
+    void remove(T value);
+    void removeNode(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* sibling, TreeNode<T>* curr, TreeNode<T>* node);
     void deleteNode(TreeNode<T>* parent, TreeNode<T>* curr);
     bool isEmpty();
 
@@ -34,6 +35,7 @@ protected:
     TreeNode<T> *root;
     int rBlackHeight;
     int lBlackHeight;
+    bool isLeft;
 };
 
 template <class T>
@@ -221,7 +223,7 @@ void RBTree<T>::insert(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* uncle,
 
 
 template <class T>
-void RBTree<T>::delete(T value){
+void RBTree<T>::remove(T value){
     TreeNode<T>* node = new TreeNode<T>(value);
 
     if(isEmpty()){
@@ -233,11 +235,11 @@ void RBTree<T>::delete(T value){
         return;
     }
     node->color = true;
-    delete(root, root, NULL, root, node);
+    removeNode(root, root, NULL, root, node);
 }
 
 template <class T>
-void RBTree<T>::delete(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* sibling, TreeNode<T>* curr, TreeNode<T>* node){
+void RBTree<T>::removeNode(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* sibling, TreeNode<T>* curr, TreeNode<T>* node){
 
     bool isLeft = true;
     gp = parent;
@@ -247,13 +249,13 @@ void RBTree<T>::delete(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* siblin
         if(k < curr->key){
             sibling = curr->right;
             curr = curr->left;
-            delete(gp, parent, sibling, curr, node);
+            removeNode(gp, parent, sibling, curr, node);
         }
         else{
             isLeft = false;
             sibling = curr->left;
             curr = curr->right;
-            delete(gp, parent, sibling, curr, node);
+            removeNode(gp, parent, sibling, curr, node);
         }
 
         if(curr == NULL)
@@ -265,6 +267,7 @@ void RBTree<T>::delete(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* siblin
     
 }
 
+template <class T>
 void RBTree<T>::deleteNode(TreeNode<T>* parent, TreeNode<T>* curr){
     //node to be deleted is a leaf node, no children
     if(curr->left == NULL && curr->right == NULL){
@@ -362,3 +365,12 @@ void RBTree<T>::rotateRight(TreeNode<T>* gp, TreeNode<T>* parent, TreeNode<T>* u
     gp->right->color = true;
 }
 #endif
+
+
+
+
+// Links used:
+// https://www.google.com/search?q=red+black+tree+cases&oq=red+black+tree+cases&aqs=chrome..69i57j0i512l9.6761j0j1&sourceid=chrome&ie=UTF-8
+// https://www.cs.usfca.edu/~galles/visualization/RedBlack.html
+// https://www.happycoders.eu/algorithms/red-black-tree-java/
+// https://www.geeksforgeeks.org/applications-advantages-and-disadvantages-of-red-black-tree/
